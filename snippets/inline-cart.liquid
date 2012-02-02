@@ -1,0 +1,83 @@
+<div id="cart_over">
+<form action="/cart" method="post" id="slideout_inner" class="clearfix">
+
+
+	<div id="cart_content"><!--TITLE OF CART -->
+      <span id="cart_close">close</span>
+	  <div id="cart-header">
+	    <h2 id="cart-title">Your Cart has <span class="items">{{ cart.item_count }}</span>
+		<span class="itemshide">{{ cart.item_count | pluralize: ' item', ' items' }} </span></h2>
+	  </div>
+
+
+    {% if cart.item_count == 0 %} <!--IF CART IS EMPTY-->
+    <div id="cart-info"><!-- CONTAINER OF WHAT IS REPLACED -->
+      <p class="empty">Your shopping cart is empty. Check out our <a href="/collections/all">catalog</a> to see what's available.</p>
+    </div><!--end cart-infoempty --> 
+
+
+    {% else %}<!--IF ITEMS EXIST-->
+    <div id="cart-info"><!-- CONTAINER OF WHAT IS REPLACED -->
+      <table>
+	    <colgroup>
+	      <col class="checkout-image" />
+	      <col class="checkout-info" />
+	      <col class="checkout-price" />
+	      <col class="checkout-quantity" />
+	      <col class="checkout-totals" />
+	      <col class="checkout-delete" />
+	    </colgroup>
+
+	    <tbody id="updating_cart">
+	    {% for item in cart.items %}<!-- this is what we re-create with the script -->
+	        
+	      <tr id="product-{{ item.id }}" class="{{ item.product.handle }} item">
+			
+		    <td id='invisible' class="cart_amount cartvis"> <!-- FOR THE FUTURE -->
+			  <input class="text" type="text" size="4" name="updates[{{item.variant.id}}]" id="updates_{{item.variant.id}}" value="{{ item.quantity }}" onfocus="this.select();" class="replace" /> 
+			</td>
+			
+		 	<td class="cart_image">
+	          <a href="{{ item.product.url }}">
+	            <img class="cartimage" src="{{ item.product.featured_image | product_img_url: 'small' }}"  alt="{{ item.product.title }}" />
+	          </a>
+	        </td>
+	            
+			<td class="cart_title"> 
+			  <a href="{{item.product.url }}">{{ item.title }}</a>
+			</td>
+				
+			<td class="cart_itemprice">
+			  <span class="quantity">{{ item.quantity }}</span> x {{ item.price | money }}
+			</td>
+	            
+			<td class ="cart_remove"><a onClick="removecartitem({{item.variant.id}}); return false;">remove</a></td>
+	          
+		  </tr>
+	    {% endfor %}
+	    </tbody>
+      </table>
+		
+		</div><!--END CART-INFO (WHAT IS REPLACED) --> 
+    {% endif %}
+</div>
+<div id="cart_bottom"><!--TITLE OF CART -->
+
+      <table>	
+	    <tbody>
+		  <tr id="cart_footer">
+			<td class="cart_update"></td>
+			<td  class="cart_shipping">Total<span class="cart_ship">(excluding tax & shipping)</span></td>
+		    <td id="cart_total" class="cart_total items"><span>  {{ cart.total_price | money}}</span></td>
+		  </tr>
+	    </tbody>
+      </table>
+
+    </div><!-- end cart_bottom-->
+	<div id="inlinecart_checkout" class="">				
+	<a href="/cart" class="btn">Edit Cart or Checkout Now</a>              
+	</div>
+	<div class="inlinecartbottom"></div>
+
+</form>  
+</div>

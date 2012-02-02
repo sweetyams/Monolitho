@@ -1,0 +1,15 @@
+<div id="col-main" class="content">
+
+  <div id="page-header">
+    {% include 'breadcrumb' %}          
+  </div>
+  
+<div id="page-content">
+	<h1 id="page-title">{{ page.title }}</h1>	
+
+  {{ page.content }}
+ </div> 
+</div><!-- /#col-left -->
+
+{% if settings.links_widgets_product %}
+{% include 'link-widgets' %}{% endif %}

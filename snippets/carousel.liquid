@@ -1,0 +1,82 @@
+<div id="slide_container" class="sixteen columns ">
+
+{% if settings.show_carousel %}
+<script type="text/javascript">
+	$(window).load(function() {
+		$('.flexslider').flexslider({
+		  animation: "slide",
+		  controlsContainer: ".flex-container"
+	  });
+	});
+</script>
+
+
+<div class="flex-container">
+	<div class="flexslider">
+	    <ul class="slides">
+        
+        {% if settings.show_carousel_item_1 == true %}
+        <li>
+          {% if settings.carousel_item_1_link != "" %}
+            {{ 'carousel-item-1.jpg' | asset_url | img_tag | link_to: settings.carousel_item_1_link }}
+          {% else %}
+            {{ 'carousel-item-1.jpg' | asset_url | img_tag }}
+          {%endif%}
+        </li>
+        {% endif %}
+        
+        {% if settings.show_carousel_item_2 == true %}
+        <li>
+          {% if settings.carousel_item_2_link != "" %}
+          {{ 'carousel-item-2.jpg' | asset_url | img_tag | link_to: settings.carousel_item_2_link }}
+          {% else %}
+            {{ 'carousel-item-2.jpg' | asset_url | img_tag }}
+          {%endif%}
+        </li>
+        {% endif %}
+        
+        {% if settings.show_carousel_item_3 == true %}
+        <li>
+          {% if settings.carousel_item_3_link != "" %}
+          {{ 'carousel-item-3.jpg' | asset_url | img_tag | link_to: settings.carousel_item_3_link }}
+          {% else %}
+            {{ 'carousel-item-3.jpg' | asset_url | img_tag }}
+          {%endif%}
+        </li>
+        {% endif %}
+        
+        {% if settings.show_carousel_item_4 == true %}
+        <li>
+          {% if settings.carousel_item_4_link != "" %}        
+          {{ 'carousel-item-4.jpg' | asset_url | img_tag | link_to: settings.carousel_item_4_link }}
+          {% else %}
+            {{ 'carousel-item-4.jpg' | asset_url | img_tag }}
+          {%endif%}
+        </li>
+        {% endif %}
+        
+        {% if settings.show_carousel_item_5 == true %}
+        <li>
+          {% if settings.carousel_item_5_link != "" %}        
+          {{ 'carousel-item-5.jpg' | asset_url | img_tag | link_to: settings.carousel_item_5_link }}
+          {% else %}
+            {{ 'carousel-item-5.jpg' | asset_url | img_tag }}
+          {%endif%}
+        </li>
+        {% endif %}
+      
+        {% if settings.show_carousel_item_6 == true %}
+        <li>
+          {% if settings.carousel_item_6_link != "" %}      
+          {{ 'carousel-item-6.jpg' | asset_url | img_tag | link_to: settings.carousel_item_6_link }}
+          {% else %}
+            {{ 'carousel-item-6.jpg' | asset_url | img_tag }}
+          {%endif%}
+        </li>
+        {% endif %}                                 
+
+		    </ul>
+		  </div>
+		</div>
+{% endif %}
+</div>

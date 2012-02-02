@@ -1,0 +1,73 @@
+  {% include 'carousel' %}
+
+  {% if settings.homepage_customtitle_visible %}
+
+<div class="sixteen columns home_title">
+	<h3>{{ settings.homepage_customtitle }}</h3>
+</div>
+  {% endif %}
+
+ {% include 'if-shop-has-no-products' %}
+
+<!-- 4 featured products -->
+{% if settings.home_featured_collection != "" and collections[settings.home_featured_collection].products.size > 0 %}
+	
+	{% if settings.home_featured_header_show == false %}
+	<div class="sixteen columns">
+        <h2 class="section-title">{{collections[settings.home_featured_collection].title | link_to: collections[settings.home_featured_collection].url }}</h2>
+        {% if collections[settings.home_featured_collection].products.size > 2 %}
+          <div class="view-more">{{ 'View More &raquo;' | link_to: collections[settings.home_featured_collection].url }}</div>
+        {% endif %}
+      </div>    
+	{%endif%}
+
+	<div class="row clearfix">
+
+		  {% for product in collections[settings.home_featured_collection].products offset: 0 limit: 2 %}
+
+		  <div class="eight columns {% cycle '', '', %}">
+				<span class="product-price">{% if product.price_varies %}<small>from</small> {{ product.price_min | money }}{% else %}{{ product.price_min | money }}{% endif %}</span>
+			<div class="largeview largeanimate {% if forloop.first %}first{% elsif forloop.last %}last{%endif%} ">
+			
+			<a href="{{ product.url | within: collection }}">
+			<img src="{{ product.featured_image | product_img_url: 'large' }}" alt="{{ product.title }}" />
+			
+			</a>
+			
+		    <a href="{{ product.url | within: collection }}">
+			  <div class="content">
+		        <h2>{{ product.title }}</h2>
+		      </div>
+		    </a>
+		    </div>
+		  
+		  </div>
+
+		  {% endfor %}
+	</div>
+{% endif %}
+
+
+<!-- Another Collection -->
+{% if settings.home_products_collection != "" and collections[settings.home_products_collection].products.size > 0 %}
+
+
+	<div class="sixteen columns">
+        <h2 class="section-title">{{collections[settings.home_products_collection].title | link_to: collections[settings.home_products_collection].url }}</h2>
+        {% capture home_products_size %}{{ collections[settings.home_products_collection].products.size }}{% endcapture %}
+        {% if home_products_size > settings.home_products_limit %}
+          <div class="view-more">{{ 'View More &raquo;' | link_to: collections[settings.home_products_collection].url }}</div>
+        {% endif %}
+      </div>    
+
+      <ul class="row clearfix" id="secondary-grid">
+        {% for product in collections[settings.home_products_collection].products limit: settings.home_products_limit %}
+        <li class="one-third column"{% cycle 'alpha', '', '', 'omega' %}>
+          {% include 'product-grid-item' %}
+        </li>
+        {% endfor %}
+      </ul>
+
+{% endif %}
+
+

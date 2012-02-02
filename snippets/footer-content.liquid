@@ -1,0 +1,49 @@
+ {%if settings.sm_twitter || settings.sm_facebook || settings.sm_linkedin || settings.sm_vimeo || settings.sm_youtube || settings.sm_flickr || settings.sm_rss %}
+<div id="footer" class="row clearfix">
+  <div class="seven columns">
+    <ul id="sm-icons" class="clearfix">
+	{%if settings.sm_twitter %}<li id="sm-twitter">
+		<a href="{{settings.sm_twitter_link}}" class="ir">Twitter<span class="socialpop">Twitter</span>
+		</a></li>{% endif %}
+      
+	{%if settings.sm_facebook %}<li id="sm-facebook">
+	<a href="{{settings.sm_facebook_link}}" class="ir">Facebook<span class="socialpop">Facebook</span>
+	</a></li>{% endif %}
+      
+	{%if settings.sm_linkedin %}<li id="sm-linkedin">
+	<a href="{{settings.sm_linkedin_link}}" class="ir">Linked In<span class="socialpop">Linked In</span>
+	</a></li>{% endif %}
+      
+	{%if settings.sm_vimeo %}<li id="sm-vimeo">
+	<a href="{{settings.sm_vimeo_link}}" class="ir">Vimeo<span class="socialpop">Vimeo</span>
+	</a></li>{% endif %}
+      
+	{%if settings.sm_youtube %}<li id="sm-youtube">
+	<a href="{{settings.sm_youtube_link}}" class="ir">YouTube<span class="socialpop">YouTube</span>
+	</a></li>{% endif %}
+      
+	{%if settings.sm_flickr %}<li id="sm-flickr">
+	<a href="{{settings.sm_flickr_link}}" class="ir">Flickr<span class="socialpop">Flickr</span>
+	</a></li>{% endif %}
+      
+	{%if settings.sm_rss %}<li id="sm-rss">
+	<a href="{{settings.sm_rss_link}}" class="ir">RSS<span class="socialpop">RSS Feed</span>
+	</a></li>{% endif %}
+   
+ 	</ul>
+</div>
+	<div class="nine columns newsletter">
+		<div id="newsletter_footer">
+		{% form 'customer' %}
+		  <input type="hidden" id="contact_tags" name="contact[tags]" value="prospect,newsletter"/>
+		  <span>Newsletter:</span>
+
+		  <input type="text" id="contact_email" name="contact[email]" class="newsletter" value="" accesskey="1"  autocomplete="off" placeholder="Email" /><input type='submit' class="submit" value="Sign Up!" />
+
+		{% endform %}
+		</div>
+		
+	</div>
+</div>
+  {% endif %}
+

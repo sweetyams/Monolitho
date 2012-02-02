@@ -1,0 +1,41 @@
+<div id="col-main" class="content">
+    
+  <h1 class="title">Search</h1>
+ 
+
+  <form id="main-search-form" name="search" action="/search">
+	<label for="search-input" class="visuallyhidden">Search</label>
+	<input type="text" id="search-input" name="q" class="search replace" value="" accesskey="4"  autocomplete="off" placeholder="Search" />
+	<input type="submit" id="search-submit" alt="Search" class class="submit" value="Search" />
+	</form>
+
+
+  {% if search.performed %}     
+    {% paginate search.results by 10 %}  
+      <div class="results diagonal-divider">
+        {% for item in search.results %} 
+        <div class="item clearfix">     
+          <div class="thumbnail">
+          {% if item.featured_image %}
+            <a href="{{ item.url }}">{{ item.featured_image | product_img_url: 'compact' | img_tag }}</a>
+          {% endif %}
+          </div>      
+  
+          <div class="search-excerpt">
+            <h3>{{ item.title | link_to: item.url }}</h3>
+            {{ item.content | strip_html | truncatewords: 40 | highlight: search.terms }}
+          </div>
+        </div> <!-- end .item -->
+        {% else %}
+          <p class="empty">Your search for "{{search.terms | escape}}" did not return any results.</p>
+        {% endfor %}
+      </div> <!-- end .results -->
+
+    {% include 'pagination' %}
+    {% endpaginate %}
+  {% endif %}
+
+</div><!-- /#col-main -->
+
+{% if settings.links_widgets_search %}
+{% include 'col-widgets' %}{% endif %}

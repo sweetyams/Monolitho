@@ -1,0 +1,91 @@
+<div id="cart_page">
+
+{% if cart.item_count == 0 %} 
+	<div id="cart_empty">
+{% else %}
+	<div id="cart_top">
+{% endif %}
+
+	  <script>
+	  function remove_item(id) {
+	    document.getElementById('updates_'+id).value = 0;
+	    document.getElementById('cartform').submit();
+	  }
+	  </script>
+	  <div id="cart-header">
+	    <h2 id="cart-title">Your Cart has <span class="items">{{ cart.item_count }}</span> {{ cart.item_count | pluralize: 'item', 'items' }} </h2>
+	  </div>
+
+	  {% if cart.item_count == 0 %} 
+	    <p class="empty">Your shopping cart is empty. Check out our <a href="/collections/all">catalog</a> to see what's available.</p>
+
+	  {% else %}
+	    <form action="/cart" method="post" id="cartform" class="clearfix">
+
+	      <table>
+	        <colgroup>
+	          <col class="checkout-image" />
+	          <col class="checkout-info" />
+	          <col class="checkout-price" />
+	          <col class="checkout-quantity" />
+	          <col class="checkout-totals" />
+	          <col class="checkout-delete" />
+	        </colgroup>
+
+
+	        <tbody>
+	          {% for item in cart.items %}
+	          <tr class="{{ item.product.handle }} item">
+	            <td class="cart_amount"> <input class="text" type="text" size="4" name="updates[{{item.variant.id}}]" id="updates_{{item.variant.id}}" value="{{ item.quantity }}" onfocus="this.select();" class="replace" /> </td>
+	            <td class="cart_image">
+	              <a href="{{ item.product.url }}">
+	                <img class="cartimage" src="{{ item.product.featured_image | product_img_url: 'compact' }}"  alt="{{ item.product.title }}" />
+	              </a>
+	            </td>
+	            <td class="cart_title"> <a href="{{item.product.url }}">{{ item.title }}</a></td>
+	            <td class="cart_itemprice">
+					{{ item.quantity }} x {{ item.price | money }}
+				</td>
+	            <td class ="cart_remove"><a onClick="remove_item({{item.variant.id}}); return false;">X</a></td>
+	          </tr>
+	          {% endfor %}
+	        </tbody>
+
+	      </table>
+	</div><div id="cart_bottom">
+	<table>
+	      
+			        <tbody>
+			<tr>
+		        	<td class="cart_update"><input type="submit" id="update-cart"  name="update" value="Update" />
+			      </td>
+		        	<td class="cart_shipping">Total<span class="cart_ship">(excluding tax & shipping)</span></td>
+		        	<td class="cart_total items">{{ cart.total_price | money }}
+		          </td>
+		</tr>
+			        </tbody>
+			      </table>
+
+
+	      <div id="checkout-proceed">	      {% if settings.allow_note %}
+			      <div id="checkout-addnote">
+			        <label for="note"><a href="#" id="toggle-note">Add a note&hellip;</a></label>
+			        <textarea id="note" name="note" class="hide" value=""></textarea>
+			      </div>
+			      {% endif %}
+		
+
+	<input type="submit" id="checkout-cart" name="checkout" value="CHECKOUT" />
+	        {% if additional_checkout_buttons %}
+	        <div id="additional-checkout-buttons">
+	          <span id="additional-checkout-buttons-label">Or checkout using:</span>
+	         {{ content_for_additional_checkout_buttons }}
+	        </div>
+	        {% endif %}                       
+	      </div>
+
+	    </form>
+	  {% endif %}
+	</div>
+
+</div><!--/#col-main -->

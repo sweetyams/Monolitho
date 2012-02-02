@@ -1,0 +1,241 @@
+<!doctype html>
+<!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
+<!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
+<!--[if IE 8 ]>    <html lang="en" class="no-js ie8"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html lang="en" class="no-js"> <!--<![endif]-->
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+  {% comment %} 
+    Open Graph tags for Facebook Like buttons 
+  {% endcomment %} 
+  <meta property="og:site_name" content="{{ shop.name | escape }}" />
+  {% if template contains 'product' %}
+    <meta property="og:image" content="{{ product.featured_image | product_img_url: 'compact' }}" />
+  {% else %}
+    {% if settings.logo_image == "logo.png" %}
+      <meta property="og:image" content="{{ 'logo.png' | asset_url }}" />
+    {% endif %}
+  {% endif %}  
+
+  <title>
+    {% if template == "index" %} {{ shop.name | escape }} {% elsif template == "404" %}Page Not Found{% else %} {{ page_title | escape }} &ndash; {{ shop.name | escape }} {% endif %}
+  </title>
+
+  {{ content_for_header }}
+  
+  {{ 'style.css' | asset_url | stylesheet_tag }}
+  {{ 'base.css' | asset_url | stylesheet_tag }}
+  {{ 'layout.css' | asset_url | stylesheet_tag }}
+  {{ 'skeleton.css' | asset_url | stylesheet_tag }}
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js"></script>
+<script src="http://static.shopify.com/s/files/1/0040/7092/assets/pngfix.js?100001" type="text/javascript"></script>
+{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+{{ 'modernizr.js' | asset_url | script_tag }}
+{{ 'tabs.js' | asset_url | script_tag }}
+{{ 'jquery.easing.1.3.js' | asset_url | script_tag }}
+{{ 'monolitho-dim.js' | asset_url | script_tag }}
+{{ 'jquery.flexslider-min.js' | asset_url | script_tag }}
+
+{% if template contains 'customers' %}
+  {{ "shopify_common.js" | shopify_asset_url | script_tag }}
+  {{ "customer_area.js"  | shopify_asset_url | script_tag }}
+{% endif %}
+
+</head>
+
+<body class="{% if customer %}customer-logged-in{% endif %} template{{ template | camelize }}">
+<div id="cart_slide"></div>
+
+
+
+ <div class="container content">
+   
+    <!-- Header -->
+	<div id="header">
+
+			<ul class="header_tab">
+				<li class="cart_tab">
+			  		<a class="cart_click">
+			     	<span class="item_count">{{ cart.item_count }}</span><span class="itemtitle"> {{ cart.item_count | pluralize: 'item', 'items' }}</span>
+			  		</a>             
+				</li>			
+				<li class="login_tab">
+					{% if shop.customer_accounts_enabled %}
+					  {% if customer  %}
+					    <a href="/account">Welcome {{ customer.first_name }}</a> | {{ "Logout" | customer_logout_link }}
+					  {% else %}
+					    {{ "Login" | customer_login_link }}
+					  {% endif %}
+					{% endif %}
+				</li>
+		 	</ul>
+	</div>	
+	
+	{% include 'inline-cart' %} 
+
+<div id="cartheader">
+    {% if cart.item_count == 0 %} <!--IF CART IS EMPTY-->
+		<div id="cart_checkout" class="cartitemtab">				
+		        <a href="/cart" class="btn">Checkout Now</a>              
+		</div><!-- end cart_bottom-->
+	{% else %}
+	    <div id="cart_checkout">				
+		        <a href="/cart" class="btn">Checkout Now</a>              
+		</div><!-- end cart_bottom-->
+	{% endif %}
+</div>
+<div class="sixteen columns logo">
+
+      <h1 id="site-title">
+        <a href="/" title="Home">
+          {% if settings.logo_image == "logo.png" %} 
+            <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name | escape }}" /> 
+          {% else %} 
+            {{ shop.name | escape }} 
+          {% endif %}
+        </a>
+      </h1>
+
+	</div>
+
+<div id="menu">
+	<div class="eleven columns menu_left">
+
+		<ul class="primary">
+
+		  {% for link in linklists.main-menu.links %}
+
+		<!-- does this link in our iteration point to the current page? -->
+		{% assign current = false %}{% if template == 'index' and link.url == '/' %}{% assign current = true %}{% elsif collection.url == link.url %}{% assign current = true %}{% elsif blog.url == link.url %}{% assign current = true %}{% elsif page.url == link.url %}{% assign current = true %}{% elsif page_title == link.title %}{% assign current = true %}{% elsif template == 'list-collections' and link.url == '/collections' %}{% assign current = true %}{% elsif page_title == 'Products' and link.url == '/collections/all' %}{% assign current = true %}{% elsif template == 'article' and link.url == article.url %}{% assign current = true %}{% endif %}
+		<!-- end of soul-searching about active class -->
+
+		    <li class="{% if forloop.first %}first{% elsif forloop.last %}last{%endif%} {% if current %}active{% endif %}">           
+			    <a href="{{ link.url }}">{{ link.title }}</a>
+			    {% capture child_list_handle %}{{ link.title | handle }}{% endcapture %}
+			    {% if linklists[child_list_handle] and linklists[child_list_handle].links.size > 0 %}
+				<div class="dropdown"><span class="nav-arrow"></span>
+				</div>
+				<ul class="drop">
+			      {% for l in linklists[child_list_handle].links %}
+			      <li><a href="{{ l.url }}">{{ l.title }}</a></li>
+			      {% endfor %}
+			    </ul>
+			    {% endif %}
+			  </li>
+
+
+			  {% endfor %}
+
+		</ul>
+	
+	</div>
+	<div class="five columns search_right">
+	
+		{% if settings.show_header_search %}
+		<nav id="search" class="clearfix">       
+ 			<form id="header-search" action="/search" method="get">
+          	<input type="text" id="top-search-input" name="q" class="search-input" value="" accesskey="4"  autocomplete="off" placeholder="Search" />
+          	<input type="submit" id="top-search-submit" class="search-submit" value="Search" />
+        	</form>
+      </nav>
+	{% endif %}
+     </div>     
+	
+</div>
+
+
+{% case template %}
+	  {% when 'index' %}
+	{% include 'social-sharing' %} 
+	  {% else %}
+{% endcase %}
+
+    <!-- Content -->
+
+ 
+      {% if template == 'list-collections' %}
+        {% include 'collection-listing' %}
+      {% else %}
+        {{ content_for_layout }}
+      {% endif %}
+
+    
+    <!-- Footer -->
+
+	{% if settings.links_widgets_home %}
+	{% include 'link-widgets' %}
+	{% endif %} 
+	{% include 'footer-content' %}
+	
+  </div><!-- /.wrapper -->
+    
+  {% if settings.twitterwidget_visible %}
+    {{ 'jquery.tweet.js' | asset_url | script_tag }}    
+    <script>
+      $(".tweets-wrapper").tweet(
+        {
+          count: {{ settings.twitterwidget_numtweets }},
+          username: "{{ settings.twitterwidget_username }}",
+          loading_text: "loading tweets...",
+          template: function(i){ return i["text"]	
+        }    
+      });
+
+    </script>
+  {% endif %}
+
+  {%if product.available %}
+  <script>
+    var selectCallback = function(variant, selector) {
+      if (variant.available == true) {
+        // selected a valid variant
+        $('#add-to-cart').removeClass('disabled').removeAttr('disabled'); // remove unavailable class from add-to-cart button, and re-enable button
+        if(variant.compare_at_price == null){
+          $('.options .price').html('<strong>'+Shopify.formatMoney(variant.price, "{{shop.money_with_currency_format}}")+'</strong>');
+        } else {
+          $('.options .price').html('<strong>'+Shopify.formatMoney(variant.price, "{{shop.money_with_currency_format}}") + '</strong> <span class="compare_at_price">was <del>' + Shopify.formatMoney(variant.compare_at_price, "{{shop.money_with_currency_format}}") + '</del></span>');
+        }
+      } else {
+        // variant doesn't exist
+        $('#add-to-cart').addClass('disabled').attr('disabled', 'disabled'); // set add-to-cart button to unavailable class and disable button
+        var message = variant ? "Sold Out" : "Unavailable";    
+        $('.options .price').text(message); // update price-field message
+      }
+    };
+
+    // initialize multi selector for product
+    $(function() {
+      new Shopify.OptionSelectors("product-select", { product: {{ product | json }}, onVariantSelected: selectCallback });
+      {% assign found_one_in_stock = false %}
+
+      {% for variant in product.variants %}
+        {% if variant.available and found_one_in_stock == false %}
+          {% assign found_one_in_stock = true %}
+          {% for option in product.options %}
+          $('.single-option-selector:eq(' + {{ forloop.index0 }} + ')').val({{ variant.options[forloop.index0] | json }}).trigger('change');
+          {% endfor %}
+        {% endif %}
+      {% endfor %}  
+    });
+  </script>
+  {% endif %}
+  
+  {% if template == 'index' and settings.show_carousel %}
+    {{ 'jquery.tools.min.js' | asset_url | script_tag }}
+  {% endif %}
+
+  {{ 'hoverintent.jquery.js' | asset_url | script_tag }}
+  {{ 'enhance.jquery.js' | asset_url | script_tag }}
+  {{ 'monolitho.js' | asset_url | script_tag }} 
+  {{ 'monolitho-css.js' | asset_url | script_tag }} 
+  {{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+    
+</body>
+</html>

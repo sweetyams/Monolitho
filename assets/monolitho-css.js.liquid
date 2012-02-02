@@ -1,0 +1,18 @@
+$(document).ready(function(){
+
+//GETS THE CSS VALUE
+var opacity = "1"
+var cart_tabcss = $(".cart_tab").css("background-color");
+
+//REPLACES THE RGB WITH RGBA AND ADDS OPACITY 
+var cartrgb = cart_tabcss.replace("rgb", "rgba") ;
+var carttabrgba = cartrgb.replace(")", ", "+ opacity +")") ;
+
+//PUTS NEW VALUE ONTO ITEM BACKGROUND
+$('.cart_tab').css({
+'background' : carttabrgba, 
+});
+
+
+ });
+

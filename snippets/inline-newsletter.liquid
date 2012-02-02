@@ -1,0 +1,11 @@
+<div id="newsletter_over">
+<div id="newsletter_inner">
+{% form 'customer' %}
+  <input type="hidden" id="contact_tags" name="contact[tags]" value="prospect,newsletter"/>
+  <p>sign up for our newsletter:</p>
+
+  <input type="text" id="contact_email" name="contact[email]" class="newsletter" value="" accesskey="1"  autocomplete="off" placeholder="Email" /><input type='submit' class="submit" value="Sign Up!" />
+
+{% endform %}
+</div>
+</div>

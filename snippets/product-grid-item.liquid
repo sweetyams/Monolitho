@@ -1,0 +1,12 @@
+<a href="{{ product.url | within: collection }}" class="product-link" title="{{product.title}}">
+	<span class="product-price thumb">{% if product.price_varies %}<small>from</small> {{ product.price_min | money }}{% else %}{{ product.price_min | money }}{% endif %}</span>
+	
+	<div class="thumbview thumbanimate product-grid-item " id="product-{{ product.variants.first.id }}">
+		<img src="{{ product.featured_image | product_img_url: 'large' }}" class="product-photo" alt="{{ product.title | escape }}" />
+        <a href="{{ product.url | within: collection }}" class="product-link" title="{{product.title}}">
+	  		<div class="content">
+      			<a href="{{ product.url | within: collection }}" class="product-link" title="{{product.title}}">{{product.title}}</a>
+    		</div>
+  		</a>
+  	</div>
+</a>
