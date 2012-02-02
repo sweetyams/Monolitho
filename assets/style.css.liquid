@@ -96,7 +96,7 @@ font-family: 'Glegoo', serif;		 }
 	h6 { font-size: 14px; line-height: 21px; }
 	.subheader { color: #777; }
 
-	p { margin: 0 0 20px 0; }
+	p { margin: 0 0 10px 0; }
 	p img { margin: 0; }
 	p.lead { font-size: 21px; line-height: 27px; color: #777;  }
 
@@ -144,6 +144,16 @@ font-family: 'Glegoo', serif;		 }
 	img.scale-with-grid {
 		max-width: 100%;
 		height: auto; }
+	.image_float{
+		display: none;
+	}
+	.image_feature{
+		display: block;
+		position: absolute;
+		top: 20%;
+		left: 30%;
+		z-index: 3000;
+	}
 
 
 /* #Buttons
@@ -1152,6 +1162,8 @@ filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#4C000000,endCol
 }
 .product-price.thumb{
 top: 195px;
+background: rgba(200, 200, 200, 0.5);
+color: black;
 }
 .largeview {
 width: inherit;
@@ -1198,7 +1210,6 @@ cursor: pointer;
 	font-size: 12px;
     position: relative;
     color: #000;
-    padding: 10px 20px 20px;
     text-align: center
 }
 .largeview a.info {

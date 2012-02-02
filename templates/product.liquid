@@ -1,11 +1,24 @@
 {% include 'social-sharing' %} 
 
-<div id="col-main">
+<div id="product-image" class="ten columns">
+    <div id="active-wrapper">      
+      <img src="{{ product.featured_image | product_img_url: 'original' }}" alt="{{ product.title }}" id="large-thumb" />
+    </div>
 
-  <div id="product" class="clearfix content">
-
-    <div id="product-information">
-
+      <ul id="thumbs"{% if product.images.size <= 1 %} class="hidden"{% endif %}>
+        {% for image in product.images %}
+        <li class="{% if forloop.first %} first{% endif %}{% if forloop.last %} last{% endif %}">
+          <a class="gallery" rel="product-gallery" href="{{ image | product_img_url: 'original' }}">
+            <img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
+          </a>
+        </li>
+		<div class="image_float {% cycle '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', %}">
+		<img src="{{ image | product_img_url: 'original' }}" alt="{{ image.alt | escape }}" />
+		</div>
+        {% endfor %}
+      </ul>
+</div>
+<div id="product-info" class="six columns">
       <div id="add-to-cart-msg"></div>
 
       <div id="product-header" class="diagonal-divider clearfix">
@@ -51,54 +64,34 @@
       <div class="description">
         {{ product.description }}
       </div>            
-
-    </div><!-- /#product-information -->
+</div>
     
-    <div id="product-gallery">
 
-    <div id="active-wrapper">      
-      <img src="{{ product.featured_image | product_img_url: 'original' }}" alt="{{ product.title }}" id="large-thumb" />
-    </div>
 
-      <ul id="thumbs"{% if product.images.size <= 1 %} class="hidden"{% endif %}>
-        {% for image in product.images %}
-        <li class="{% if forloop.first %} first{% endif %}{% if forloop.last %} last{% endif %}">
-          <a class="gallery" rel="product-gallery" href="{{ image | product_img_url: 'original' }}">
-            <img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
-          </a>
-        </li>
-        {% endfor %}
-      </ul>
-    </div><!-- /#product-gallery -->
 
-  </div><!-- /#product -->
+
 
 
   {% if settings.productspg_featured_collection != empty and collections[settings.productspg_featured_collection].products.size > 0 %}
-    <!-- A collection of products -->
-    <section class="diagonal-divider clearfix">
 
-      <header class="section-details clearfix">
-        <h1 class="section-title">{{collections[settings.productspg_featured_collection].title | link_to: collections[settings.productspg_featured_collection].url }}</h1>
 
+	<div class="sixteen columns">
+        <h2 class="section-title">{{collections[settings.productspg_featured_collection].title | link_to: collections[settings.productspg_featured_collection].url }}</h2>
         {% capture featured_products_size %}{{ collections[settings.productspg_featured_collection].products.size }}{% endcapture %}
         {% if featured_products_size > settings.productspg_featured_limit %}
           <div class="view-more">{{ 'View More &raquo;' | link_to: collections[settings.productspg_featured_collection].url }}</div>
         {% endif %}
-      </header>    
+      </div>    
 
-      <ul class="product-grid" id="secondary-grid">
+      <ul class="row clearfix" id="secondary-grid">
         {% for product in collections[settings.productspg_featured_collection].products limit: settings.productspg_featured_limit %}
-        <li{% cycle '', '', '', '', ' class="last-in-row"' %}>
+        <li class="one-third column"{% cycle 'alpha', '', '', 'omega' %}>
           {% include 'product-grid-item' %}
         </li>
         {% endfor %}
-      </ul>      
+      </ul>
 
-    </section>
-  {% endif %}
-
-</div><!-- /#col-main -->
+{% endif %}
 
 
 

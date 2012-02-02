@@ -12,12 +12,17 @@
 <!-- 4 featured products -->
 {% if settings.home_featured_collection != "" and collections[settings.home_featured_collection].products.size > 0 %}
 	
-	{% if settings.home_featured_header_show == false %}
+	
+	
+  
+	
+	{% if settings.home_featured_header_show == true %}
 	<div class="sixteen columns">
         <h2 class="section-title">{{collections[settings.home_featured_collection].title | link_to: collections[settings.home_featured_collection].url }}</h2>
         {% if collections[settings.home_featured_collection].products.size > 2 %}
           <div class="view-more">{{ 'View More &raquo;' | link_to: collections[settings.home_featured_collection].url }}</div>
-        {% endif %}
+          
+{% endif %}
       </div>    
 	{%endif%}
 
@@ -37,6 +42,9 @@
 		    <a href="{{ product.url | within: collection }}">
 			  <div class="content">
 		        <h2>{{ product.title }}</h2>
+				{% if settings.show_featured_desc == true %}
+				<p>{{ product.description | truncate: 100 }}
+				{% endif %}
 		      </div>
 		    </a>
 		    </div>
