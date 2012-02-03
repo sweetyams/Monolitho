@@ -1,23 +1,35 @@
 {% include 'social-sharing' %} 
 
-<div id="product-image" class="ten columns">
-    <div id="active-wrapper">      
-      <img src="{{ product.featured_image | product_img_url: 'original' }}" alt="{{ product.title }}" id="large-thumb" />
-    </div>
-
-      <ul id="thumbs"{% if product.images.size <= 1 %} class="hidden"{% endif %}>
-        {% for image in product.images %}
-        <li class="{% if forloop.first %} first{% endif %}{% if forloop.last %} last{% endif %}">
-          <a class="gallery" rel="product-gallery" href="{{ image | product_img_url: 'original' }}">
-            <img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
-          </a>
-        </li>
-		<div class="image_float {% cycle '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', %}">
+<ul id="gallery" class="invisible {% if product.image <= 1 %}hidden{% endif %}">
+  {% for image in product.images %}
+  <li class="{% if forloop.first %} first{% endif %}{% if forloop.last %} last{% endif %}">
+    <a class="gallery" rel="product-gallery" href="">
+      <img src="{{ image | product_img_url: 'small' }}" alt="{{ image.alt | escape }}" />
+    </a>
+  </li>
+  <li class="{% if forloop.first %} first{% endif %}{% if forloop.last %} last{% endif %}">
+    <a class="gallery" rel="product-gallery" href="">
 		<img src="{{ image | product_img_url: 'original' }}" alt="{{ image.alt | escape }}" />
-		</div>
-        {% endfor %}
-      </ul>
+    </a>
+  </li>
+  {% endfor %}
+</ul>
+
+  <div id="information" class="invisible description">
+    {{ product.description }}
+  </div>
+
+
+
+<div id="product-image" class="ten columns">
+	<div id="product_more">  
+	<div id ="product-images" class =" {% if product.image <= 1 %}hidden{% endif %}">More Images</div>
+ 	</div>
+     <img src="{{ product.featured_image | product_img_url: 'grande' }}" alt="{{ product.title }}" id="large-thumb" />
+	
 </div>
+
+
 <div id="product-info" class="six columns">
       <div id="add-to-cart-msg"></div>
 
@@ -25,7 +37,7 @@
 
         <div id="product-header-title">
           <h1 id="product-title">{{ product.title }}</h1>
-          {%if settings.show_vendor %}<h2 id="product-vendor">{{ product.vendor | link_to_vendor }}</h2>{% endif %}
+          {%if settings.show_vendor %}<h3 id="product-vendor">by:{{ product.vendor | link_to_vendor }}</h3>{% endif %}
         </div>
 
         {% if product.available %}
@@ -38,18 +50,22 @@
               "> {% comment %} Hide the dropdown if we've only got one variant and one option to show. {% endcomment %}
                 <select id="product-select" name="id">
                   {% for variant in product.variants %}
-                  <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }}</option>
-                  {% endfor %}
-                </select>
+                  <option value="{{ variant.id }}">{{ variant.title }} - {{ variant.price | money }} </option>
+				{% endfor %}
+				</select>
+
               </div>            
-                
-              <div id="purchase">
-                <p class="price"></p>                                 
                 <input type="submit" name="add" id="add-to-cart" value="Add to Cart" />
- 				</div>
+                
                             
             </div><!-- /.options -->
           </form>
+	      <div id="product-tags">
+		<h3>Tags:</h3>
+	        {% for tag in product.tags %}  
+			        <li><a href="http://whatever.myshopify.com/collections/all/{{ tag }}">{{ tag }}</a></li>
+			{% endfor %}
+			</div>
 
         {% else %}
           <div id="product-actions" class="sold-out">
@@ -60,10 +76,6 @@
         {% endif %}
       </div><!-- /#product-header -->
 
-      
-      <div class="description">
-        {{ product.description }}
-      </div>            
 </div>
     
 
